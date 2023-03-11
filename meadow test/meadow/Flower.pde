@@ -54,4 +54,9 @@ class Flower{
     translate(-xpos,-ypos);
   }
   
+  void increaseAge(){
+    age += 10;
+    drawFlower();
+  }
+  
 }//end flower

@@ -7,18 +7,20 @@ int noOfFlowers = 14; //hard coded
 int noOfZones = 3; //hard coded
 int currentZone;
 
+int keyval = 0;  //for keypress
+
 Flower[] flowerAr = new Flower[noOfFlowers];
 Zone[] zoneAr = new Zone[noOfZones];
 
 void setup(){
-  noLoop();
+  //noLoop();
   size(1300,800);
   colorMode(HSB, 360, 100, 100);
   background(188,54,93);
   noStroke();
   fill(123,80,50);
   rect(0,height*0.75, width, height);
-  currentZone = 1;
+  currentZone = 0;
   
   
   // load flower table
@@ -57,30 +59,34 @@ void setup(){
     zoneAr[i] = new Zone(zoneID[i], zoneName[i], ph[i], moisture[i], sunlight[i]);
   }
   
- 
-  //initialise flowers
-  //for (int i = 0; i < flowers.length; i++){
-  //  int randhue = int(random(210,354));
-  //  int randage = int(random(365));
-  //  int x = int(map(i, 0,flowers.length-1, 40, width-40));
-  //  int stemlength = int(map(randage, 0, 365, 30,100));
-  //  int y = int(height*0.75 - stemlength);
-  //  println(i, x,y);
-  //  flowers[i] = new Flower(randage, 1, x, y, randhue);
-  //}
-  
-  //for (int i = 0; i < flowers.length; i++){
-  //  flowers[i].drawFlower();
-  //}
   
 }
 
 void draw(){
+  background(188,54,93);
   for (int i=0; i<flowerTable.getRowCount(); i++){
     flowerAr[i].drawFlower();
   }
   drawHealthbars();
+  
+  if(keyPressed){
+    println(key);
+    if (key == 'a') {
+    currentZone = 0;
+    }else if(key == 'b'){
+      currentZone = 1;
+    }else if(key == 'c'){
+      currentZone = 2;
+    }else if(key == 'z'){
+      for(int i=0; i<flowerTable.getRowCount();i++){
+        flowerAr[i].increaseAge();
+      }
+    }
+  }
 }
+
+  
+
 
 void drawHealthbars(){
   fill(0,0,21,150);
@@ -93,5 +99,4 @@ void drawHealthbars(){
   zoneAr[currentZone].drawMoistureBar(barMax, barWidth, barStart);
   zoneAr[currentZone].drawPhBar(barMax, barWidth, barStart);
   zoneAr[currentZone].drawSunlightBar(barMax, barWidth, barStart);
-
 }
