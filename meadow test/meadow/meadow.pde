@@ -64,10 +64,14 @@ void setup(){
 
 void draw(){
   background(188,54,93);
+  noStroke();
+  fill(123,80,50);
+  rect(0,height*0.75, width, height);
   for (int i=0; i<flowerTable.getRowCount(); i++){
     flowerAr[i].drawFlower();
   }
   drawHealthbars();
+  drawInfoBox();
   
   if(keyPressed){
     println(key);
@@ -99,4 +103,14 @@ void drawHealthbars(){
   zoneAr[currentZone].drawMoistureBar(barMax, barWidth, barStart);
   zoneAr[currentZone].drawPhBar(barMax, barWidth, barStart);
   zoneAr[currentZone].drawSunlightBar(barMax, barWidth, barStart);
+}
+
+void drawInfoBox(){
+  fill(0,0,21,150);
+  rect(width/2+100,height-150, width/2-110, 140);
+  fill(0,0,99); 
+  text("press a,b,c to change zone",width/2+110, height-120);
+  text("a: queens building, b: canalside, c: graduate centre", width/2+110, height-90);
+  text("press 'z' to age flowers by 10 days", width/2+110, height-60);
+
 }
