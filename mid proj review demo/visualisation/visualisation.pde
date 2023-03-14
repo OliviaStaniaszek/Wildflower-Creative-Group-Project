@@ -25,7 +25,6 @@ void setup() {
   map.resize(1300, 800);
   image(map, 0, 0);
   textAlign(CENTER);
-  
   loadFlowerTable();
   loadZoneTable();
 }
@@ -104,6 +103,7 @@ void information(){
   if(mousePressed&&mouseX<50&&mouseY<50){
     screen = 1;
     image(map, 0, 0);
+    screen1();
   }
 }
 
@@ -253,10 +253,13 @@ void meadow(int zone){
     }
   }
   
-  if(mousePressed&&mouseX<50&&mouseY<50){
+  if(mousePressed&&mouseX<50&&mouseY<50&&screen!=1){
     println("back button pressed");
     screen = 1;
     screen1();
+    image(map, 0, 0);
+    colorMode(RGB, 255, 255, 255);
+    flowerTransparency = 255;
   }
   
   
