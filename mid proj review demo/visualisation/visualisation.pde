@@ -51,48 +51,51 @@ void draw() {
 
 //draw flowers on map
 void flowers(){
-noStroke();
-// set centre point
-translate(width/2, height/2);
-//flower 1
-fill(255, 0, 255, flowerTransparency); 
-ellipse(104, 253, 10, 10);
-fill(255, 255, 10, flowerTransparency); // light yellow
-ellipse(104, 253, 5, 5);
-
-//flower 2
-fill(255, 0, 105, flowerTransparency); // green
-ellipse(151, 244, 10, 10);
-fill(255, 255, 10, flowerTransparency); // light yellow
-ellipse(151, 244, 5, 5);
-
-//flower 3
-fill(105, 0, 255, flowerTransparency); // green
-ellipse(241, -224, 10, 10);
-fill(255, 255, 10, flowerTransparency); // light yellow
-ellipse(241, -224, 5, 5);
-
-//flower 4
-fill(105, 0, 105, flowerTransparency); // green
-ellipse(260, -206, 10, 10);
-fill(255, 255, 10, flowerTransparency); // light yellow
-ellipse(260, -206, 5, 5);
-
-//flower 5
-fill(259, 150, 105, flowerTransparency); // green
-ellipse(-105, 179, 10, 10);
-fill(255, 255, 10, flowerTransparency); // light yellow
-ellipse(-105, 179, 5, 5);
-
-//translate back to (0,0) in top left corner
-translate(-width/2, -height/2);
+  colorMode(RGB);
+  noStroke();
+  // set centre point
+  translate(width/2, height/2);
+  //flower 1
+  fill(255, 0, 255, flowerTransparency); 
+  ellipse(104, 253, 10, 10);
+  fill(255, 255, 10, flowerTransparency); // light yellow
+  ellipse(104, 253, 5, 5);
+  
+  //flower 2
+  fill(255, 0, 105, flowerTransparency); // green
+  ellipse(151, 244, 10, 10);
+  fill(255, 255, 10, flowerTransparency); // light yellow
+  ellipse(151, 244, 5, 5);
+  
+  //flower 3
+  fill(105, 0, 255, flowerTransparency); // green
+  ellipse(241, -224, 10, 10);
+  fill(255, 255, 10, flowerTransparency); // light yellow
+  ellipse(241, -224, 5, 5);
+  
+  //flower 4
+  fill(105, 0, 105, flowerTransparency); // green
+  ellipse(260, -206, 10, 10);
+  fill(255, 255, 10, flowerTransparency); // light yellow
+  ellipse(260, -206, 5, 5);
+  
+  //flower 5
+  fill(259, 150, 105, flowerTransparency); // green
+  ellipse(-105, 179, 10, 10);
+  fill(255, 255, 10, flowerTransparency); // light yellow
+  ellipse(-105, 179, 5, 5);
+  
+  //translate back to (0,0) in top left corner
+  translate(-width/2, -height/2);
 }
 
 
 //information page
 void information(){
+  colorMode(HSB, 360, 100, 100);
   stroke(0);
-  background(253);
+  //background(253);
+  background(188,54,93);
   fill(253);
   rect(0, 0, 50, 50);
   fill(0);
@@ -208,7 +211,7 @@ void drawInfoBox(){
   rect(width/2+100,height-150, width/2-110, 140);
   fill(0,0,99); 
   text("press a,b,c to change zone",width/2+110, height-120);
-  text("a: queens building, b: canalside, c: graduate centre", width/2+110, height-90);
+  //text("a: queens building, b: canalside, c: graduate centre", width/2+110, height-90);
   text("press 'z' to age flowers by 10 days", width/2+110, height-60);
 }
 
@@ -217,7 +220,13 @@ void drawBackButton(){
   rect(0,0,150,40);
   fill(0,0,99); 
   text("back to map", 15,25);
-  
+}
+
+void drawInfoButton(){
+  fill(0,0,21,150);
+  rect(width-150,0,150,40);
+  fill(0,0,99); 
+  text("info", width-100,25);
 }
 
 //meadow
@@ -236,6 +245,7 @@ void meadow(int zone){
   drawHealthbars();
   drawInfoBox();
   drawBackButton();
+  drawInfoButton();
   textAlign(CENTER);
   
   if(keyPressed){
@@ -253,6 +263,7 @@ void meadow(int zone){
     }
   }
   
+<<<<<<< Updated upstream
   if(mousePressed&&mouseX<50&&mouseY<50&&screen!=1){
     println("back button pressed");
     screen = 1;
@@ -260,7 +271,16 @@ void meadow(int zone){
     image(map, 0, 0);
     colorMode(RGB, 255, 255, 255);
     flowerTransparency = 255;
+=======
+  if(mousePressed&&mouseX<150&&mouseY<40){
+    println("back button pressed");
+    screen = 1;
+    image(map, 0, 0);
+    screen1();// not fully working?
+  }else if(mousePressed&&mouseX>width-150&&mouseY<40){
+    screen = 2;
+    information();
+>>>>>>> Stashed changes
   }
-  
   
 }
