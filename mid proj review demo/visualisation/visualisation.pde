@@ -11,7 +11,7 @@ Table zoneTable;
 
 int noOfFlowers = 14; //hard coded
 int noOfZones = 3; //hard coded
-int currentZone;
+int currentZone = 0;
 int keyval = 0;  //for keypress
 Flower[] flowerAr = new Flower[noOfFlowers];
 Zone[] zoneAr = new Zone[noOfZones];
@@ -35,7 +35,7 @@ void draw() {
   }else if(screen==2){
     information();
   }else if(screen ==3){
-    meadow(0);
+    meadow(currentZone);
   }
   //check if info screen is clicked
   if (mousePressed&&mouseX>1235&&mouseX<1300&&mouseY>750&&mouseY<800) {
