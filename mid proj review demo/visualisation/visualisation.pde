@@ -263,7 +263,6 @@ void meadow(int zone){
     }
   }
   
-<<<<<<< Updated upstream
   if(mousePressed&&mouseX<50&&mouseY<50&&screen!=1){
     println("back button pressed");
     screen = 1;
@@ -271,8 +270,7 @@ void meadow(int zone){
     image(map, 0, 0);
     colorMode(RGB, 255, 255, 255);
     flowerTransparency = 255;
-=======
-  if(mousePressed&&mouseX<150&&mouseY<40){
+  }else if(mousePressed&&mouseX<150&&mouseY<40){
     println("back button pressed");
     screen = 1;
     image(map, 0, 0);
@@ -280,7 +278,6 @@ void meadow(int zone){
   }else if(mousePressed&&mouseX>width-150&&mouseY<40){
     screen = 2;
     information();
->>>>>>> Stashed changes
   }
   
 }
