@@ -19,9 +19,17 @@ void setup() {
 //the loop routine runs over and over again forever:
 void loop() {
   //read the input on analog pin 0:
+  // int sensorValue = analogRead(A0);
+  // //print out the value you read:
+  // Serial.println(sensorValue);
+  // delay(1); //delay in between reads for stability
+  //Serial.print("Moisture: ");
+  Serial.println(analogRead(A1));
   int sensorValue = analogRead(A0);
-  //print out the value you read:
-  Serial.println(sensorValue);
-  delay(1); //delay in between reads for stability
+  float voltage = sensorValue *(5.0/1023.0);
+  //Serial.print("Voltage: ");
+  //Serial.println();
+  Serial.println(voltage);
+  delay(5000);  
 
 }
