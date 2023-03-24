@@ -7,9 +7,11 @@ Zone[] zones = {queens,canalside,graduate};
 
 Table zoneTable;
 int currentZone = 0;
+
 PImage queensimg;
 PImage graduateimg;
 PImage canalimg;
+PImage accomimg;
 
 int keyval = 0;
 //zone1 flowers
@@ -33,6 +35,8 @@ void setup(){
   graduateimg.resize(1300,800);
   canalimg = loadImage("canalside.png");
   canalimg.resize(1300,800);
+  accomimg = loadImage("accom.png");
+  accomimg.resize(1300,800);
 
   
   //image(queensimg,0,0);
@@ -84,7 +88,8 @@ void backgroundimg(){
   if (currentZone == 0){
     image(queensimg,0,0);
   }else if(currentZone == 1){
-    image(canalimg,0,0);
+    //image(canalimg,0,0);
+    image(accomimg,0,0);
   }else if(currentZone == 2){
     image(graduateimg,0,0);
   }
