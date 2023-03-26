@@ -41,22 +41,60 @@ class Zone{
     for(int flower=0; flower< 5; flower++){
       //println(flowers[flower]);
       //colorMode(HSB,365, 100,100);
-      fill(flower*70,74,82,200);
+      //fill(flower*70,74,82,200);
       //x y w scale
       float x = flowers[flower][0];
       float y = flowers[flower][1];
       float w = flowers[flower][2];
       float h = flowers[flower][3]; //height is double width
       float s = flowers[flower][4];
+      //gradtall.resize(int(w*s),int(h*s));
       
-      rect(x,y,w*s,h*s);
+      if(id == 1){ //queens
+        println(flower);
+        if(flower == 0 || flower == 3){
+          image(queenstall,x,y,w*s,h*s);
+        }else if(flower == 1|| flower == 4){
+          image(queensmid,x,y,w*s,h*s);
+        }else{
+          image(queensshort,x,y,w*s,h*s);
+        }
+         //accom/cafe
+      }else if(id ==2){
+        image(queensmid,x,y,w*s,h*s);
+       //graduate
+      }else if(id == 3){
+        //image(gradshort,x,y,w*s,h*s); 
+        if(flower % 2 == 0){
+          image(gradtall,x,y,w*s,h*s); 
+        }else{
+          image(gradshort,x,y,w*s,h*s); 
+        }
+      }
+      
+      //image(gradtall,x,y,w*s,h*s);
+      //rect(x,y,w*s,h*s);
       //colorMode(RGB);
       
     }
   }
+  void backgroundimg(){
+    textAlign(CENTER);
+    textSize(40);
+    fill(255,255,255);
+    if (currentZone == 0){
+      image(queensimg,0,0,width,height);      
+    }else if(currentZone == 1){
+      //image(canalimg,0,0);
+      image(groundimg,0,0,width,height);
+    }else if(currentZone == 2){
+      image(graduateimg,0,0,width,height);
+    }
+    textAlign(LEFT);
+  }
   
   void drawMoistureBar(int barMax, int barWidth, int barStart){
-    fill(111,130,245); //blue
+    fill(156,171,250); //blue
     float moistbarLength = map(moisture, 0, 300, 0, barMax);
     rect(barStart, height - 130, moistbarLength, barWidth);
     //text("Soil moisture",30, height - 30);
