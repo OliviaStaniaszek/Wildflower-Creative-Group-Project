@@ -8,26 +8,59 @@ int flowerTransparency = 255;
 int screen = 1;
 int num = 0;
 PFont font;
+PFont trebuchet;
+PFont title;
 //button transparency
 int bt1 = 100;
 int bt3 = 100;
 int bt5 = 100;
 //meadow
-Table flowerTable;
+//Table flowerTable;
 Table zoneTable;
-int noOfFlowers = 14; //hard coded
+//int noOfFlowers = 14; //hard coded
 int noOfZones = 3; //hard coded
 int currentZone = 0;
-int keyval = 0;  //for keypress
-Flower[] flowerAr = new Flower[noOfFlowers];
+//int keyval = 0;  //for keypress
+//Flower[] flowerAr = new Flower[noOfFlowers];
 Zone[] zoneAr = new Zone[noOfZones];
+
+//zoomed in view
+Zone queens;
+Zone canalside;
+Zone graduate;
+
+Zone[] zones = {queens,canalside,graduate};
+
+
+//bkgs
+PImage queensimg;
+PImage graduateimg;
+PImage groundimg;
+//PImage canalimg;
+//PImage accomimg;
+
+//flowers
+PImage gradtall;
+PImage gradshort;
+PImage queenstall;
+PImage queensmid;
+PImage queensshort;
+PImage ground;
+
+int keyval = 0;
+//zone1 flowers
+float w = 200;
+float h = 400;
+
 
 void setup() {
   //map
   frameRate(12);
   //size(1300, 800);
-  fullScreen();
+  //fullScreen();
+  size(1440,900); //kamryn screen size
   background(0);
+  //map
   map = loadImage("map.png");
   map.resize(width, height);
   dryMap = loadImage("dry.png");
@@ -38,10 +71,42 @@ void setup() {
   basicMap.resize(width, height);
   image(map, 0, 0);
   textAlign(CENTER);
-  loadFlowerTable();
-  loadZoneTable();
+  //loadFlowerTable();
+  //loadZoneTable();
   font = loadFont("data/Herculanum-48.vlw");
-  textFont(font);
+  trebuchet = loadFont("TrebuchetMS-48.vlw");
+  title = loadFont("TrebuchetMS-120.vlw");
+  textFont(trebuchet);
+  
+  //zoomed in
+  queensimg = loadImage("queens.png");
+  graduateimg = loadImage("graduate.png");
+  groundimg = loadImage("ground.png");
+  gradtall = loadImage("grad tall.png");
+  gradshort = loadImage("grad short.png");
+  queenstall = loadImage("queens tall.png");
+  queensmid = loadImage("queens mid.png");
+  queensshort = loadImage("queens short.png");
+  ground = loadImage("ground cafe open crumpled.png");
+  //load zone table
+  zoneTable = loadTable("zonedata.csv", "header");
+  int zrows = zoneTable.getRowCount();
+  int [] zoneID = new int[zrows];
+  String [] zoneName = new String[zrows];
+  float [] ph = new float[zrows];
+  float [] moisture = new float[zrows];
+  float [] sunlight = new float[zrows];
+  
+  for(int i=0; i<zoneTable.getRowCount(); i++){
+    TableRow row = zoneTable.getRow(i);
+    zoneID[i] = row.getInt("zoneID");
+    zoneName[i] = row.getString("name");
+    ph[i] = row.getFloat("ph");
+    moisture[i] = row.getFloat("moisture");
+    sunlight[i] = row.getFloat("sunlight");
+    float[][] flowerpos = getFlowerPos(i);
+    zones[i] = new Zone(zoneID[i], zoneName[i], ph[i], moisture[i], sunlight[i], flowerpos);
+  }
 }
 
 void draw() {
@@ -57,9 +122,16 @@ void draw() {
   } else if (screen==5) {
     //basic filtered screen
     screen5();
-  } else if (screen == 3) {
-    meadow(currentZone);
+  } else if (screen == 6) {
+    drawZone(0);
+  } else if (screen == 7) {
+    drawZone(1);
+  } else if (screen == 8) {
+    drawZone(2);
+  }else if (screen == 9) {
+    drawConfirm();
   }
+  
   //debug
   if (mousePressed) {
     println(mouseX + " : " + mouseY);
@@ -152,8 +224,10 @@ void draw() {
     text("   in your chosen area", 1000, 850);
     textSize(120);
     textAlign(CENTER);
+    textFont(title);
     text("Rewilding", 310, 320);
     text("Campus", 300, 450);
+    textFont(trebuchet);
     
   }
 
@@ -217,147 +291,142 @@ void draw() {
     mapInfoBox();
     filters();
   }
+  
+  void drawZone(int zone){
+    println("zone", zone);
+    zones[zone].backgroundimg(zone);
+    zones[zone].drawFlowers(zone);
+    drawHealthbars(zone);
+    //drawInfoBox();
+    drawTitleBox(zone);
+    drawBackButton();
+    drawConfirmButton();
+  }
+  
+  void drawConfirm(){
+    background(247,235,205);
+    drawBackButton();
+    textAlign(CENTER);
+    fill(90);
+    text("please take a packet of seeds and plant it in your chosen area",width/2,height/2);
+  }
+  
+  
 
 //COLLISIONS!!!!!!!!
 void collisions(){
   if(mousePressed&&mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660){
     println("GRADUATE");
+    screen = 8;
+    drawZone(1);
  }else if(mousePressed&&mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757){
     println("QUEENS");
+    screen = 6;
+    drawZone(0);
   }else if(mousePressed&&mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600){
     println("GROUND");
+    screen = 7;
+    drawZone(1);
+  }else if(mousePressed&& mouseX<150 && mouseY<40){ //back button
+    screen = 1;
+  }else if(mousePressed&& mouseX>width-200 && mouseY>height-50){ //plant seeds button
+    screen = 9;
   }
+}
+
+float[][] getFlowerPos(int zone){
+  if(zone == 0){
+    float[] one = {150,300,w,h,1};
+    float[] two = {340, 150, w, h, 0.75};
+    float[] three = {400, 250, w,h, 1.25};
+    float[] four = {620, 150, w,h, 1};
+    float[] five = {950, 120, w,h, 0.8};
+    float[][] z1flowers = {one,two,three,four,five};
+    return z1flowers;
+  }else if(zone ==1){
+    float[] one = {400,300, w,h,0.9};
+    float[] two = {550, 200, w, h, 0.65};
+    float[] three = {570, 420, w,h, 1};
+    float[] four = {740, 270, w,h, 0.9};
+    float[] five = {950, 380, w,h, 0.7};
+    float[][] z1flowers = {one,two,three,four,five};
+    return z1flowers;
+  }else{
+    float[] one = {80,280,w,h,1};
+    float[] two = {300, 200, w, h, 0.75};
+    float[] three = {490, 200, w,h, 1.25};
+    float[] four = {850, 250, w,h, 1};
+    float[] five = {1250, 100, w,h, 0.7};
+    float[][] z1flowers = {one,two,three,four,five};
+    return z1flowers;
+  }
+  //return flowers
 }
 
 
 
 
 
+void drawHealthbars(int zone){
+  fill(0,0,0,150);
+  noStroke();
+  rect(10,height-150, width/2, 140);
+  //int barMax = width/2-50;
+  //int barWidth = 10;
+  //int barStart = 30;
+  int barMax = width/2-200;
+  int barWidth = 10;
+  int barStart = 150;
+  textSize(20);
+  
+  zones[zone].drawMoistureBar(barMax, barWidth, barStart);
+  zones[zone].drawPhBar(barMax, barWidth, barStart);
+  zones[zone].drawSunlightBar(barMax, barWidth, barStart);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //FLOWERS
-  void loadFlowerTable() {
-    flowerTable = loadTable("packetsdata.csv", "header");
-    int frows = flowerTable.getRowCount();
-    //println(rows + " total rows in table");
-
-    int [] packetID = new int[frows];
-    int [] zonePlanted = new int[frows];
-    String [] datePlanted = new String[frows];
-
-    for (int i=0; i<flowerTable.getRowCount(); i++) {
-      TableRow row = flowerTable.getRow(i);
-      packetID[i] = row.getInt("packet");
-      zonePlanted[i] = row.getInt("zone");
-      datePlanted[i] = row.getString("date planted");
-      flowerAr[i] = new Flower(packetID[i], zonePlanted[i], datePlanted[i]);
+void drawInfoBox(){
+  fill(0,0,0,150);
+  noStroke();
+  rect(width/2+100,height-150, width/2-110, 140);
+  fill(255); 
+  
+  //text("press a,b,c to change zone",width/2+110, height-120);
+  //text("a: queens building, b: ground cafe, c: graduate centre", width/2+110, height-90);
+  //text("press 'z' to age flowers by 10 days", width/2+110, height-60);
+}
+  
+  void drawTitleBox(int zone){
+    fill(0,0,0,150);
+    noStroke();
+    rect(width/2-250,20,500,80);
+    textAlign(CENTER);
+    textFont(trebuchet, 40);
+    fill(255,255,255);
+    if(zone == 0){
+      text("Queens Building", width/2,75);
+    }else if(zone == 1){
+      text("Ground Cafe", width/2,75);
+    }else{
+      text("Graduate Centre", width/2,75);
     }
-  }
-
-  void loadZoneTable() {
-    zoneTable = loadTable("zonedata.csv", "header");
-    int zrows = zoneTable.getRowCount();
-    int [] zoneID = new int[zrows];
-    String [] zoneName = new String[zrows];
-    float [] ph = new float[zrows];
-    float [] moisture = new float[zrows];
-    float [] sunlight = new float[zrows];
-
-    for (int i=0; i<zoneTable.getRowCount(); i++) {
-      TableRow row = zoneTable.getRow(i);
-      zoneID[i] = row.getInt("zoneID");
-      zoneName[i] = row.getString("name");
-      ph[i] = row.getFloat("ph");
-      moisture[i] = row.getFloat("moisture");
-      sunlight[i] = row.getFloat("sunlight");
-      zoneAr[i] = new Zone(zoneID[i], zoneName[i], ph[i], moisture[i], sunlight[i]);
-    }
-  }
-
-  void drawHealthbars() {
-    fill(0, 0, 21, 150);
-    rect(10, height-150, width/2, 140);
-    int barMax = width/2-50;
-    int barWidth = 10;
-    int barStart = 30;
-    textSize(20);
-
-    zoneAr[currentZone].drawMoistureBar(barMax, barWidth, barStart);
-    zoneAr[currentZone].drawPhBar(barMax, barWidth, barStart);
-    zoneAr[currentZone].drawSunlightBar(barMax, barWidth, barStart);
-  }
-
-  void drawInfoBox() {
-    fill(0, 0, 21, 150);
-    rect(width/2+100, height-150, width/2-110, 140);
-    fill(0, 0, 99);
-    text("press a,b,c to change zone", width/2+110, height-120);
-    text("a: queens building, b: canalside, c: graduate centre", width/2+110, height-90);
-    text("press 'z' to age flowers by 10 days", width/2+110, height-60);
   }
 
   void drawBackButton() {
-    fill(0, 0, 21, 150);
+    noStroke();
+    textAlign(LEFT);
+    fill(0,0,0,150);
     rect(0, 0, 150, 40);
-    fill(0, 0, 99);
+    fill(255,255,255);
+    textSize(20);
     text("back to map", 15, 25);
   }
-
-  //meadow
-  void meadow(int zone) {
-    colorMode(HSB, 360, 100, 100);
-    background(188, 54, 93);
+  
+  void drawConfirmButton() {
     noStroke();
-    fill(123, 80, 50);
-    rect(0, height*0.75, width, height);
-    currentZone = zone;
-
-    for (int i=0; i<flowerTable.getRowCount(); i++) {
-      flowerAr[i].drawFlower();
-    }
     textAlign(LEFT);
-    drawHealthbars();
-    drawInfoBox();
-    drawBackButton();
-    textAlign(CENTER);
-
-    if (keyPressed) {
-      println(key);
-      if (key == 'a') {
-        currentZone = 0;
-      } else if (key == 'b') {
-        currentZone = 1;
-      } else if (key == 'c') {
-        currentZone = 2;
-      } else if (key == 'z') {
-        for (int i=0; i<flowerTable.getRowCount(); i++) {
-          flowerAr[i].increaseAge();
-        }
-      }
-    }
-
-    if (mousePressed&&mouseX<50&&mouseY<50&&screen!=1) {
-      println("back button pressed");
-      screen = 1;
-      screen1();
-      image(map, 0, 0);
-      colorMode(RGB, 255, 255, 255);
-      flowerTransparency = 255;
-    }
+    fill(0,0,0,150);
+    rect(width-200, height-50, 200, 50);
+    fill(255,255,255);
+    textSize(25);
+    text("Plant here", width-170, height-18);
   }
