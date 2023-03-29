@@ -31,9 +31,15 @@ int keyval = 0;
 float w = 200;
 float h = 400;
 
+int xadd = width - 1300;
+int yadd = height - 800;
+//println(xadd,yadd);
+
 
 void setup(){
-  size(1300,800);
+  //size(1300,800);
+  size(1440,900);
+  //fullScreen();
   noStroke();
   colorMode(RGB,255,255,255);
   //noLoop();
@@ -52,6 +58,9 @@ void setup(){
   queenstall = loadImage("queens tall.png");
   queensmid = loadImage("queens mid.png");
   queensshort = loadImage("queens short.png");
+  
+  
+
   //image(queensimg,0,0);
   
   //load zone table
@@ -141,11 +150,11 @@ void drawTitleBox(){
 
 float[][] getFlowerPos(int zone){
   if(zone == 0){
-    float[] one = {150,250,w,h,1};
+    float[] one = {150,300,w,h,1};
     float[] two = {260, 100, w, h, 0.75};
     float[] three = {320, 200, w,h, 1.25};
     float[] four = {520, 100, w,h, 1};
-    float[] five = {850, 70, w,h, 0.8};
+    float[] five = {950, 70, w,h, 0.8};
     float[][] z1flowers = {one,two,three,four,five};
     return z1flowers;
   }else if(zone ==1){

@@ -20,7 +20,7 @@ class Zone{
     moisture = zmoisture;
     sunlight = zsunlight;
     flowers = zflowers;
-    println(id,name,ph,moisture,sunlight);
+    //println(id,name,ph,moisture,sunlight);
   }
   
   
@@ -51,7 +51,7 @@ class Zone{
       //gradtall.resize(int(w*s),int(h*s));
       
       if(id == 1){ //queens
-        println(flower);
+        //println(flower);
         if(flower == 0 || flower == 3){
           image(queenstall,x,y,w*s,h*s);
         }else if(flower == 1|| flower == 4){
@@ -71,10 +71,6 @@ class Zone{
           image(gradshort,x,y,w*s,h*s); 
         }
       }
-      
-      //image(gradtall,x,y,w*s,h*s);
-      //rect(x,y,w*s,h*s);
-      //colorMode(RGB);
       
     }
   }
