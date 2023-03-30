@@ -52,13 +52,17 @@ int keyval = 0;
 float w = 200;
 float h = 400;
 
+boolean gradhover;
+boolean cafehover;
+boolean queenhover;
+
 
 void setup() {
   //map
   frameRate(12);
   //size(1300, 800);
-  fullScreen();
-  //size(1440,900); //kamryn screen size
+  //fullScreen();
+  size(1440,900); //kamryn screen size
   background(0);
   //map
   map = loadImage("map.png");
@@ -96,6 +100,10 @@ void setup() {
   float [] ph = new float[zrows];
   float [] moisture = new float[zrows];
   float [] sunlight = new float[zrows];
+  
+  gradhover=false;
+  cafehover=false;
+  queenhover=false;
 
   for (int i=0; i<zoneTable.getRowCount(); i++) {
     TableRow row = zoneTable.getRow(i);
@@ -112,6 +120,7 @@ void setup() {
 void draw() {
   collisions();
   hover();
+  
   if (screen == 1) {
     screen1();
   } else if (screen==2) {
@@ -160,6 +169,9 @@ void draw() {
       bt1 = bt3 = bt5 = 100;
     }
   }
+  gradhover = false;
+  cafehover=false;
+  queenhover=false;
 }
 
 
@@ -263,6 +275,17 @@ void filters() {
   text("Wet", 1305, 60);
   text("Shady", 1305, 125);
   text("Acidic", 1305, 197);
+  
+  // hover over green area effect
+  fill(63,245,15,100);
+  noStroke();
+  if(gradhover){
+    rect(593,626,50,30);
+  }else if(cafehover){
+     rect(900,575,30,30);
+  }else if(queenhover){
+    rect(769,707,75,50);
+  }
 }
 
 //filtered when dry is pressed
@@ -315,10 +338,13 @@ void drawConfirm() {
 void hover() {
   if (mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660) {
     println("GRADUATE");
+    gradhover=true;
   } else if (mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757) {
+    queenhover=true;
     println("QUEENS");
   } else if (mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600) {
     println("GROUND");
+    cafehover=true;
   }
 }
 
