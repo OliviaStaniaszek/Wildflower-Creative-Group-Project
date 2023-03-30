@@ -8,94 +8,186 @@
 int value = 0;
 
 PShape map;
+PShape buildings;
+PShape green;
+PShape water;
 
 //float ry;
 
-int x = 400; //width/2;
-int y = 150;//width/2;
-int z = 50;//-150;
-int rx = -450;
-int ry = 0;
+float x = 450;//500; //400; //width/2;
+float y = 250;//150;//width/2;
+float z = 100;//50;//-150;
+float rx = -1350;//-650;//-450;
+float ry = 3700;//3200;//0;
+
+int zone; // reset queen cafe graduate
   
 public void setup() {
   size(900, 500, P3D);
+  zone=0;
+  //stroke(0);
+  //noFill();
+  //noLoop();
     
   map = loadShape("map.obj");
+  buildings = loadShape("buildings.obj");
+  green = loadShape("green.obj");
+  water = loadShape("water.obj");
   //rotateZ(HALF_PI);
-  //map.setFill(color(99,209,100));
+  green.setFill(color(41,152,55));
+  buildings.setFill(color(142,147,147));
+  water.setFill(color(96,135,175));
+  //strokeWeight(10);
+  //buildings.setStroke(color(0));
+
 }
 
 public void draw() {
-  background(0);
+  background(122,194,237);
   lights();
-  directionalLight(100, 100, 100, 0, 0, -1);
-  //directionalLight(100,100,100, 10,10,10);
-  //directionalLight(126, 126, 126, 0, 10, 0);
-  //ambientLight(150,150,150);
-  //float cameraY = height/2.0;
-  //float fov = mouseX/float(width) * PI/2;
-  //float cameraZ = cameraY / tan(fov / 2.0);
-  //float aspect = float(width)/float(height);
-  //if (mousePressed) {
-  //  aspect = aspect / 2.0;
-  //}
-  //perspective(fov, aspect, cameraZ/10.0, cameraZ*10.0);
-  
-  //translate(width/2+30, height/2, 0);
-  //rotateX(-PI/6);
-  //rotateY(PI/3 + mouseY/float(height) * PI);
-  // Change height of the camera with mouseY
-  //camera(30.0, mouseY, 220.0, // eyeX, eyeY, eyeZ
-  //       0.0, 0.0, 0.0, // centerX, centerY, centerZ
-  //       0.0, 1.0, 0.0); // upX, upY, upZ
-  
-  //camera(70.0, 35.0, 120.0, 50.0, 50.0, 0.0, 
-  //     0.0, 1.0, 0.0);
-  //translate(50, 50, 0);  
-  
-  //translate(width/2, height/2 + 100, -200);
-  //rotateZ(PI);
-  
+  directionalLight(100, 100, 100, -5, -5, -1);
   translate(x, y, z);
-  //rotateZ(PI);
+  rotateZ(PI);
   //rotateY(ry);
   rotateX(rx);
+  scale(-1.0, 1.0); //mirror across X-axis 
   rotateY(ry);
-  shape(map);
+  shape(buildings);
+  shape(water);
+  shape(green);
+  
+  if(zone==0){
+    reset();
+  }else if(zone==1){
+    queens();
+  }else if(zone==2){
+    cafe();
+  }else if(zone==3){
+    graduate();
+  }
   
   //ry += 0.02;
 }
 
+void queens(){
+  //x= 500;
+  //y = 175;
+  //z = 300;
+  //rx = -1350;
+  //ry = 3650;
+  float newx=1000;
+  float newy=400;
+  float newz=700;
+  float newrx=-1400;
+  float newry=3650;
+  x=lerp(x,newx,0.05);
+  y=lerp(y,newy,0.05);
+  z=lerp(z,newz,0.05);
+  rx =lerp(rx,newrx,1);
+  ry=lerp(ry,newry,1);
+}
+
+void reset(){
+  //x = 450;
+  //y = 250;
+  //z = 100;
+  //rx = -1350;
+  //ry = 3650;
+  float newx=950;
+  float newy=500;
+  float newz=550;
+  float newrx=-1350;
+  float newry=3700;
+  x=lerp(x,newx,0.05);
+  y=lerp(y,newy,0.05);
+  z=lerp(z,newz,0.05);
+  rx =lerp(rx,newrx,1);
+  ry=lerp(ry,newry,1);
+}
+
+void cafe(){
+  float newx=900;
+  float newy=450;
+  float newz=750;
+  float newrx=-1400;
+  float newry=3600;
+  
+  //float oldx=x;
+  //float oldy=y;
+  //float oldz=z;
+  //float oldrx=rx;
+  //float oldry=ry;
+  
+  x=lerp(x,newx,0.05);
+  y=lerp(y,newy,0.05);
+  z=lerp(z,newz,0.05);
+  rx =lerp(rx,newrx,1);
+  ry=lerp(ry,newry,1);
+  
+  println(x,y,z,rx,ry);
+  
+  //900.0006 450.0003 749.9994 -1399.0 3600.0
+  //900.0006 449.9997 749.9994 -1400.0 3600.0
+  
+}
+
+void graduate(){
+  
+  float newx=875;
+  float newy=550;
+  float newz=800;
+  float newrx=1000;
+  float newry=4200;
+  
+  x=lerp(x,newx,0.05);
+  y=lerp(y,newy,0.05);
+  z=lerp(z,newz,0.05);
+  rx =lerp(rx,newrx,1);
+  ry=lerp(ry,newry,1);
+}
+
 void keyPressed() {
   if (key == 'a') {
-    x+=50;
+    x+=25;
     println(x,y,z);
   } else if (key == 'd'){
-    x-=50;
+    x-=25;
     println(x,y,z);
   } else if (key == 'w'){
-    y+=50;
+    y+=25;
     println(x,y,z);
   } else if (key == 's'){
-    y-=50;
+    y-=25;
     println(x,y,z);
   } else if (key == 'k'){
-    z-=50;
+    z-=25;
     println(x,y,z);
   } else if (key == 'l'){
-    z+=50;
+    z+=25;
     println(x,y,z);
   }else if (key == 'y'){
-    rx-=50;
+    rx-=25;
     println(x,y,z);
   } else if (key == 'h'){
-    rx+=50;
+    rx+=25;
     println(x,y,z,rx,ry);
   }else if (key == 'u'){
-    ry-=50;
+    ry-=25;
     println(x,y,z);
   } else if (key == 'j'){
-    ry+=50;
+    ry+=25;
     println(x,y,z,rx,ry);
+  }else if(key == '1'){
+    zone = 1;
+    //queens();
+  }else if(key =='0'){
+    zone = 0;
+    //reset();
+  }else if(key =='2'){
+    zone = 2;
+    //cafe();
+  }else if(key =='3'){
+    zone = 3;
+    //graduate();
   }
 }
