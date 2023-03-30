@@ -15,8 +15,8 @@ float sun = 0;
 
 void setup() {
   //link processing to serial port
-  //fullScreen();
-  size(600, 600);
+  fullScreen();
+  //size(600, 600);
   String myPort = Serial.list()[1];
   mySerial = new Serial(this, myPort, 9600);
   test = loadTable("test.csv", "header");
@@ -36,7 +36,7 @@ void draw() {
     if (!(value == null)) {
       value = value.trim();
       int a = int(value);
-      if (a > 3) {
+      if (a > 5) {
         moist = int(value);
         println("moist = " + moist);
         rows.setInt("moisture", moist);
@@ -50,21 +50,21 @@ void draw() {
     if (moist > 400 && moist<600 && sun > 0 && sun < 1.5) {
       image(ground, 0, 0, width, height);
       println("water");
-      image(water, 0, 0,width/2, height/2);
-    }else if(moist > 0 && moist<200 && sun > 0 && sun < 1.5) {
+      image(water, 500, 300,300, 300);
+    }else if(moist > 0 && moist<300 && sun > 0 && sun < 1.5) {
       image(ground, 0, 0, width, height);
       println("none");
-      image(none, 0, 0,width/2, height/2);
+      image(none, 500,300,300, 300);
     }else if(moist > 400 && moist<600 && sun > 1.5) {
       image(ground, 0, 0, width, height);
       println("both");
-      image(both, 0, 0,width/2, height/2);
+      image(both, 500, 300,300, 300);
     }else if(moist > 0 && moist<200 && sun > 1.5) {
       image(ground, 0, 0, width, height);
       println("sunny");
-      image(sunny, 0, 0, width/2, height/2);
+      image(sunny, 500, 300, 300, 300);
     }
-    
+
     String moisture = row.getString("moisture");
     String sunlight = row.getString("sunlight");
     println(moisture + " " + sunlight);
