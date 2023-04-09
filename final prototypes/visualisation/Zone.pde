@@ -10,16 +10,18 @@ class Zone{
   float[] flower4 = new float[3];
   float[] flower5 = new float[3];
   float flowerW = 200;
+  int noOfFlowers;
   
   float[][] flowers = {flower1,flower2,flower3,flower4,flower5};
   
-  Zone(int zid, String zname, float zph, float zmoisture, float zsunlight, float[][] zflowers){
+  Zone(int zid, String zname, float zph, float zmoisture, float zsunlight, float[][] zflowers, int znoOfFlowers){
     id = zid;
     name = zname;
     ph = zph;
     moisture = zmoisture;
     sunlight = zsunlight;
     flowers = zflowers;
+    noOfFlowers = znoOfFlowers;
     //println(id,name,ph,moisture,sunlight);
   }
   
@@ -38,7 +40,7 @@ class Zone{
   }
   
   void drawFlowers(int id){
-    for(int flower=0; flower< 5; flower++){
+    for(int flower=0; flower< noOfFlowers; flower++){
       //println(flowers[flower]);
       //colorMode(HSB,365, 100,100);
       //fill(flower*70,74,82,200);

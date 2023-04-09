@@ -3,41 +3,31 @@ PImage map;
 PImage dryMap;
 PImage sunnyMap;
 PImage basicMap;
-int flowerX, flowerY;
+
 int flowerTransparency = 255;
 int screen = 1;
 int num = 0;
-PFont font;
+// PFont font;
 PFont trebuchet;
 PFont title;
 //button transparency
 int bt1 = 100;
 int bt3 = 100;
 int bt5 = 100;
-//meadow
-//Table flowerTable;
+
 Table zoneTable;
-//int noOfFlowers = 14; //hard coded
-int noOfZones = 3; //hard coded
-int currentZone = 0;
-//int keyval = 0;  //for keypress
-//Flower[] flowerAr = new Flower[noOfFlowers];
-Zone[] zoneAr = new Zone[noOfZones];
+int prevZone;
 
 //zoomed in view
 Zone queens;
 Zone canalside;
 Zone graduate;
-
 Zone[] zones = {queens, canalside, graduate};
-
 
 //bkgs
 PImage queensimg;
 PImage graduateimg;
 PImage groundimg;
-//PImage canalimg;
-//PImage accomimg;
 
 //flowers
 PImage gradtall;
@@ -47,8 +37,6 @@ PImage queensmid;
 PImage queensshort;
 PImage ground;
 
-int keyval = 0;
-//zone1 flowers
 float w = 200;
 float h = 400;
 
@@ -56,15 +44,15 @@ boolean gradhover;
 boolean cafehover;
 boolean queenhover;
 
-
 void setup() {
   //map
   frameRate(12);
-  //size(1300, 800);
   //fullScreen();
   size(1440,900); //kamryn screen size
   background(0);
+
   //map
+  // load and resize background images
   map = loadImage("map.png");
   map.resize(width, height);
   dryMap = loadImage("dry.png");
@@ -75,14 +63,13 @@ void setup() {
   basicMap.resize(width, height);
   image(map, 0, 0);
   textAlign(CENTER);
-  //loadFlowerTable();
-  //loadZoneTable();
-  font = loadFont("data/Herculanum-48.vlw");
+
+  // font = loadFont("data/Herculanum-48.vlw");
   trebuchet = loadFont("TrebuchetMS-48.vlw");
   title = loadFont("TrebuchetMS-120.vlw");
   textFont(trebuchet);
 
-  //zoomed in
+  //zoomed in screen images
   queensimg = loadImage("queens.png");
   graduateimg = loadImage("graduate.png");
   groundimg = loadImage("ground.png");
@@ -92,7 +79,8 @@ void setup() {
   queensmid = loadImage("queens mid.png");
   queensshort = loadImage("queens short.png");
   ground = loadImage("ground cafe open crumpled.png");
-  //load zone table
+  
+  // load zone table
   zoneTable = loadTable("zonedata.csv", "header");
   int zrows = zoneTable.getRowCount();
   int [] zoneID = new int[zrows];
@@ -105,6 +93,7 @@ void setup() {
   cafehover=false;
   queenhover=false;
 
+  // fill Zone objects with data from csv
   for (int i=0; i<zoneTable.getRowCount(); i++) {
     TableRow row = zoneTable.getRow(i);
     zoneID[i] = row.getInt("zoneID");
@@ -113,13 +102,15 @@ void setup() {
     moisture[i] = row.getFloat("moisture");
     sunlight[i] = row.getFloat("sunlight");
     float[][] flowerpos = getFlowerPos(i);
-    zones[i] = new Zone(zoneID[i], zoneName[i], ph[i], moisture[i], sunlight[i], flowerpos);
+    int noOfFlowers = int(random(1,3)); //each zone starts with 1 or 2 flowers
+    zones[i] = new Zone(zoneID[i], zoneName[i], ph[i], moisture[i], sunlight[i], flowerpos,noOfFlowers);
   }
 }
 
 void draw() {
   collisions();
   hover();
+  ellipseMode(CENTER);
   
   if (screen == 1) {
     screen1();
@@ -139,13 +130,10 @@ void draw() {
   } else if (screen == 8) {
     drawZone(2);
   } else if (screen == 9) {
+    
     drawConfirm();
   }
 
-  //debug
-  if (mousePressed) {
-    println(mouseX + " : " + mouseY);
-  }
   if (screen==1||screen==2||screen==4||screen==5) {
     if (mousePressed&&mouseX >= 1060 && mouseX <= 1200) {
       if (mouseY >= 30 && mouseY <= 70) {
@@ -276,15 +264,16 @@ void filters() {
   text("Shady", 1305, 125);
   text("Acidic", 1305, 197);
   
-  // hover over green area effect
-  fill(63,245,15,100);
-  noStroke();
+  // red circle on hover
+  noFill();
+  stroke(#FA0303);
+  ellipseMode(CORNER);
   if(gradhover){
-    rect(593,626,50,30);
+    ellipse(593,626,50,30);
   }else if(cafehover){
-     rect(900,575,30,30);
+     ellipse(900,575,30,30);
   }else if(queenhover){
-    rect(769,707,75,50);
+    ellipse(769,707,75,50);
   }
 }
 
@@ -317,55 +306,64 @@ void screen5() {
 
 void drawZone(int zone) {
   println("zone", zone);
+  
   zones[zone].backgroundimg(zone);
   zones[zone].drawFlowers(zone);
   drawHealthbars(zone);
-  //drawInfoBox();
   drawTitleBox(zone);
   drawBackButton();
   drawConfirmButton();
 }
 
 void drawConfirm() {
-  background(247, 235, 205);
+  drawZone(prevZone);
+  fill(251,243,232,150);
+  rect(0,0,width,height);
   drawBackButton();
   textAlign(CENTER);
   fill(90);
-  text("please take a packet of seeds and plant it in your chosen area", width/2, height/2);
+  textSize(40);
+  text("please take a packet of seeds and plant it in your chosen area", width/2, height-200);
 }
 
-//HOVER
+// HOVER
 void hover() {
   if (mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660) {
-    println("GRADUATE");
+    //println("GRADUATE");
     gradhover=true;
   } else if (mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757) {
     queenhover=true;
-    println("QUEENS");
+    //println("QUEENS");
   } else if (mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600) {
-    println("GROUND");
+    //println("GROUND");
     cafehover=true;
   }
 }
 
-//COLLISIONS!!!!!!!!
+// COLLISIONS
 void collisions() {
   if (mousePressed&&mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660) {
-    println("GRADUATE");
+    //println("GRADUATE");
+    prevZone = 2;
     screen = 8;
     drawZone(1);
   } else if (mousePressed&&mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757) {
-    println("QUEENS");
+    //println("QUEENS");
+    prevZone = 0;
     screen = 6;
     drawZone(0);
   } else if (mousePressed&&mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600) {
-    println("GROUND");
+    //println("GROUND");
+    prevZone = 1;
     screen = 7;
     drawZone(1);
   } else if (mousePressed&& mouseX<150 && mouseY<40) { //back button
     screen = 1;
   } else if (mousePressed&& mouseX>width-200 && mouseY>height-50) { //plant seeds button
     screen = 9;
+    if(zones[prevZone].noOfFlowers<5){
+      zones[prevZone].noOfFlowers+=1;
+    }
   }
 }
 
@@ -399,16 +397,10 @@ float[][] getFlowerPos(int zone) {
 }
 
 
-
-
-
 void drawHealthbars(int zone) {
   fill(0, 0, 0, 150);
   noStroke();
   rect(10, height-150, width/2, 140);
-  //int barMax = width/2-50;
-  //int barWidth = 10;
-  //int barStart = 30;
   int barMax = width/2-200;
   int barWidth = 10;
   int barStart = 150;
@@ -419,16 +411,12 @@ void drawHealthbars(int zone) {
   zones[zone].drawSunlightBar(barMax, barWidth, barStart);
 }
 
-void drawInfoBox() {
-  fill(0, 0, 0, 150);
-  noStroke();
-  rect(width/2+100, height-150, width/2-110, 140);
-  fill(255);
-
-  //text("press a,b,c to change zone",width/2+110, height-120);
-  //text("a: queens building, b: ground cafe, c: graduate centre", width/2+110, height-90);
-  //text("press 'z' to age flowers by 10 days", width/2+110, height-60);
-}
+//void drawInfoBox() {
+//  fill(0, 0, 0, 150);
+//  noStroke();
+//  rect(width/2+100, height-150, width/2-110, 140);
+//  fill(255);
+//}
 
 void drawTitleBox(int zone) {
   fill(0, 0, 0, 150);
