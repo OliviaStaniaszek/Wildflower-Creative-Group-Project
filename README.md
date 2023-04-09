@@ -42,6 +42,7 @@ With no limit on money or time, we would like to implement the functionality of 
 ![Sunny filter selected](https://user-images.githubusercontent.com/95420080/230772223-688fbc1e-19b5-4f19-b3b1-e1f5e342725e.png)
 ![Ground cafe close up screen](https://user-images.githubusercontent.com/95420080/230772232-fca7324b-fc88-4d3e-acd0-3374cbd00501.png)
 ![Queens Building close up screen](https://user-images.githubusercontent.com/95420080/230772240-9ced74c9-1d82-4141-bbdf-7a49f6ddc67d.png)
+![Graduate Centre - plant seeds](https://user-images.githubusercontent.com/95420080/230774872-1f5a6f33-c2c8-460e-b775-ec39d99509ca.png)
 
 ## 3D map
 ![3D map](https://user-images.githubusercontent.com/95420080/230772627-33f8b590-7b7a-4fa2-b42c-a98f439be5ec.png)
