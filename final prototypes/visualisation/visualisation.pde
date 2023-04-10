@@ -47,8 +47,8 @@ boolean queenhover;
 void setup() {
   //map
   frameRate(12);
-  //fullScreen();
-  size(1440,900); //kamryn screen size
+  fullScreen();
+  //size(1440,900); //kamryn screen size
   background(0);
 
   //map
@@ -130,10 +130,9 @@ void draw() {
   } else if (screen == 8) {
     drawZone(2);
   } else if (screen == 9) {
-    
     drawConfirm();
   }
-
+  //Checking the transparency of the fiter buttons
   if (screen==1||screen==2||screen==4||screen==5) {
     if (mousePressed&&mouseX >= 1060 && mouseX <= 1200) {
       if (mouseY >= 30 && mouseY <= 70) {
@@ -163,37 +162,37 @@ void draw() {
 }
 
 
-//draw flowers on map
+//draw flowers on the big map
 void flowers() {
   noStroke();
   //flower 1 - queens
   fill(255, 0, 255, flowerTransparency);
   ellipse(787, 734, 12, 12);
-  fill(255, 255, 10, flowerTransparency); // light yellow
+  fill(255, 255, 10, flowerTransparency); 
   ellipse(787, 734, 5, 5);
 
   //flower 2 - queens
-  fill(255, 0, 105, flowerTransparency); // green
+  fill(255, 0, 105, flowerTransparency);
   ellipse(804, 721, 12, 12);
-  fill(255, 255, 10, flowerTransparency); // light yellow
+  fill(255, 255, 10, flowerTransparency); 
   ellipse(804, 721, 5, 5);
 
   //flower 3 - Ground
-  fill(105, 0, 255, flowerTransparency); // green
+  fill(105, 0, 255, flowerTransparency); 
   ellipse(913, 581, 12, 12);
-  fill(255, 255, 10, flowerTransparency); // light yellow
+  fill(255, 255, 10, flowerTransparency);
   ellipse(913, 581, 5, 5);
 
   //flower 4 - Ground
-  fill(105, 0, 105, flowerTransparency); // green
+  fill(105, 0, 105, flowerTransparency); 
   ellipse(915, 591, 12, 12);
-  fill(255, 255, 10, flowerTransparency); // light yellow
+  fill(255, 255, 10, flowerTransparency); 
   ellipse(915, 591, 5, 5);
 
   //flower 5 - graduate
-  fill(259, 150, 105, flowerTransparency); // green
+  fill(259, 150, 105, flowerTransparency);
   ellipse(620, 642, 12, 12);
-  fill(255, 255, 10, flowerTransparency); // light yellow
+  fill(255, 255, 10, flowerTransparency); 
   ellipse(620, 642, 5, 5);
 }
 
@@ -204,11 +203,6 @@ void screen1() {
   num++;
   mapInfoBox();
   filters();
-  if (mousePressed&&mouseX>825 && mouseX<1045 && mouseY>360 && mouseY<505) {
-    // very basic collision of cemetary
-    println("cemetary clicked");
-    screen = 3;
-  }
 }
 
 void mapInfoBox() {
@@ -232,7 +226,7 @@ void mapInfoBox() {
 }
 
 void filters() {
-  //columns
+  //Boxes for the buttons
   fill(200, 200, 200);
   textSize(30);
   stroke(0);
@@ -255,7 +249,7 @@ void filters() {
   //Acidic
   fill(124, 252, 0, 100);
   rect(1230, 165, 150, 45, 28);
-
+  //Text for the buttons
   fill(90, 90, 90);
   text("Dry", 1125, 60);
   text("Sunny", 1125, 125);
@@ -268,6 +262,7 @@ void filters() {
   noFill();
   stroke(#FA0303);
   ellipseMode(CORNER);
+  //checking to see if the mouse is hovering
   if(gradhover){
     ellipse(593,626,50,30);
   }else if(cafehover){
@@ -306,7 +301,6 @@ void screen5() {
 
 void drawZone(int zone) {
   println("zone", zone);
-  
   zones[zone].backgroundimg(zone);
   zones[zone].drawFlowers(zone);
   drawHealthbars(zone);
@@ -326,34 +320,31 @@ void drawConfirm() {
   text("please take a packet of seeds and plant it in your chosen area", width/2, height-200);
 }
 
-// HOVER
+// Checking if the mouse is hovering
 void hover() {
   if (mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660) {
-    //println("GRADUATE");
     gradhover=true;
   } else if (mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757) {
     queenhover=true;
-    //println("QUEENS");
   } else if (mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600) {
-    //println("GROUND");
     cafehover=true;
   }
 }
 
-// COLLISIONS
+// Checking is the user pressed on certain green space
 void collisions() {
   if (mousePressed&&mouseX>593&&mouseX<648&&mouseY>626&&mouseY<660) {
-    //println("GRADUATE");
+    //graduate
     prevZone = 2;
     screen = 8;
     drawZone(1);
   } else if (mousePressed&&mouseX>769&&mouseX<851&&mouseY>707&&mouseY<757) {
-    //println("QUEENS");
+    //queens
     prevZone = 0;
     screen = 6;
     drawZone(0);
   } else if (mousePressed&&mouseX>900&&mouseX<935&&mouseY>575&&mouseY<600) {
-    //println("GROUND");
+    //ground
     prevZone = 1;
     screen = 7;
     drawZone(1);
@@ -410,13 +401,6 @@ void drawHealthbars(int zone) {
   zones[zone].drawPhBar(barMax, barWidth, barStart);
   zones[zone].drawSunlightBar(barMax, barWidth, barStart);
 }
-
-//void drawInfoBox() {
-//  fill(0, 0, 0, 150);
-//  noStroke();
-//  rect(width/2+100, height-150, width/2-110, 140);
-//  fill(255);
-//}
 
 void drawTitleBox(int zone) {
   fill(0, 0, 0, 150);
