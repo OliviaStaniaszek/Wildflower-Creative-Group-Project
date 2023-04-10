@@ -47,8 +47,8 @@ boolean queenhover;
 void setup() {
   //map
   frameRate(12);
-  fullScreen();
-  //size(1440,900); //kamryn screen size
+  //fullScreen();
+  size(1440,900); // screen size
   background(0);
 
   //map
