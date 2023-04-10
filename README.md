@@ -35,6 +35,14 @@ Prototype showing 3D map functionality. Ideally we would like the user to be abl
 
 With no limit on money or time, we would like to implement the functionality of the 3D map with the style and colours of the 2D visualisation
 
+### sensor_testing.pde && senosr_to_processing.ino
+Prototype showing Arduino taking in the sensor values and putting them in a csv file in Processing, then Processing uses that information to change the healthiness of the flower.
+- Using the Serial to transfer the information from Arduino to Processing
+- myPort has to have the correct value, whichever port in the list of ports your computer has that is controling the Arduino myPort has to equal the same
+- Arduino code can not be open while running the processing code otherwise anerror will pop up
+- there is a delay in the changing of the flowers, even when the values have changed the flowers take a while to change and be representative of the live data from the Arduino sensors
+
+
 ## Images
 ## visualisation.pde
 
